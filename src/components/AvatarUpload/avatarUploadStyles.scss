@@ -5,6 +5,7 @@ $colorTitle: #495567;
 $colorSubtitle: #677489;
 
 .box {
+  position: relative;
   display: flex;
   justify-content: center;
   padding: 30px;
@@ -15,11 +16,9 @@ $colorSubtitle: #677489;
   height: 177px;
   margin: auto;
   border: 2px dashed $borderDashed;
-  
+  cursor: pointer;
+
   .drop-file-container {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
     margin: auto;
     line-height: 25.2px;
     padding: 10px;
@@ -46,5 +45,37 @@ $colorSubtitle: #677489;
       vertical-align: top;
       color: $colorSubtitle;
     }
+    
+    .container-info-image {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      
+      .file-image {
+        width: 170px;
+        height: 170px;
+        border-radius: 128%;
+        position: absolute;
+        left: 0;
+        margin-left: 25px;
+      }
+
+      .container-titles {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .container-title-with-image-filled {
+        margin-left: 127px
+      }
+    }
   }
 }
+
+.box:hover { 
+  .drop-file-container {
+    opacity: 0.6;
+  }
+}
+
