@@ -1,0 +1,50 @@
+$boxShadow: rgba(149, 157, 165, .2) 0px 8px 24px;
+$backgroundBox: #F2F5F8;
+$borderDashed: #C7CDD3;
+$colorTitle: #495567;
+$colorSubtitle: #677489;
+
+.box {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 20px;
+  background-color: $backgroundBox;
+  box-shadow: $boxShadow;
+  width: 553px;
+  height: 177px;
+  margin: auto;
+  border: 2px dashed $borderDashed;
+  
+  .drop-file-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: auto;
+    line-height: 25.2px;
+    padding: 10px;
+    font-family: 'Inter', sans-serif;
+    size: 14px;
+    
+    .file-title {
+      font-weight: 500;
+      font-size: 18px;
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      margin: auto;
+      color: $colorTitle;
+
+      span {
+        margin-left: 10px;
+      }
+    }
+
+    .file-subtitle {
+      font-weight: 400;
+      font-size: 17px;
+      vertical-align: top;
+      color: $colorSubtitle;
+    }
+  }
+}
