@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaMountain } from "react-icons/fa";
+import { GrClose } from "react-icons/gr";
 import "./avatarUploadStyles.scss";
 
 type ImageModel = File & {
@@ -13,7 +14,7 @@ type ImageModel = File & {
 type AcceptedFilesModel = (args: ImageModel[]) => void
 
 const AvatarUpload: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<ImageModel>();
+  const [selectedImage, setSelectedImage] = useState<ImageModel | null>();
 
   const onDrop = useCallback<AcceptedFilesModel>((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
@@ -28,12 +29,17 @@ const AvatarUpload: React.FC = () => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
+  const returnToInitialState = (): void => {
+    setSelectedImage(null)
+  }
+
   return (
-    <div className="box" {...getRootProps()}>
-      <input type="file" {...getInputProps()} />
-      <div className="drop-file-container">
+    <div className="box">
+      <div className="box-header">
+        <GrClose onClick={returnToInitialState} />
+      </div>
+      <div className="drop-file-container" {...getRootProps()}>
         <div className='container-info-image'>
-          
           {selectedImage && (
             <img src={selectedImage.preview} className="file-image" alt="preview"></img>
           )}
@@ -49,8 +55,9 @@ const AvatarUpload: React.FC = () => {
             </span>
           </div>
         </div>
-
       </div>
+      
+      <input type="file" {...getInputProps()} />
     </div>
   );
 };
