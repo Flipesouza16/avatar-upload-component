@@ -16,26 +16,28 @@ type AcceptedFilesModel = (args: ImageModel[]) => void;
 
 const AvatarUpload: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<ImageModel | null>();
+  const [imageValue, setImageValue] = useState<number>(0);
+
+  const [isSelectedImageSaved, setIsSelectedImageSaved] =
+    useState<boolean>(false);
+
   const [isErroUpload, setIsErroUpload] = useState<boolean>(false);
 
-  const onDrop = useCallback<AcceptedFilesModel>(
-    (acceptedFiles) => {
-      acceptedFiles.forEach((file) => {
-        if (!file.type.includes("image")) {
-          setIsErroUpload(true);
-        } else {
-          setIsErroUpload(false);
-        }
+  const onDrop = useCallback<AcceptedFilesModel>((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      if (!file.type.includes("image")) {
+        setIsErroUpload(true);
+      } else {
+        setIsErroUpload(false);
+      }
 
-        const newImage = Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        });
-
-        setSelectedImage(newImage);
+      const newImage = Object.assign(file, {
+        preview: URL.createObjectURL(file),
       });
-    },
-    []
-  );
+
+      setSelectedImage(newImage);
+    });
+  }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -44,26 +46,44 @@ const AvatarUpload: React.FC = () => {
     setIsErroUpload(false);
   };
 
+  const isDisplayBoxDashed = (): boolean => {
+    return (
+      !selectedImage || (selectedImage && !isErroUpload && isSelectedImageSaved)
+    );
+  };
+
+  const getBackgroundSize = () => {
+    return { backgroundSize: `${(imageValue * 100) / 10}%` }
+  }
+
+  const updateImageValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation()
+    const newValue = e.target.valueAsNumber
+    setImageValue(newValue)
+  }
+
   return (
-    <div className={`box ${!selectedImage && 'box-default'}`}>
+    <div className={`box ${isDisplayBoxDashed() && "box-dashed"}`}>
       <div className="box-header">
         <GrClose size={20} onClick={returnToInitialState} />
       </div>
-      <div className="drop-file-container" {...getRootProps()}>
+      <div className="drop-file-container">
         <div className="container-info-image">
           {selectedImage &&
             (isErroUpload ? (
-              <div className="container-image-error">
+              <div className="container-image container-image-error" {...getRootProps()}>
                 <div className="file-image-icone">
                   <RiErrorWarningFill className="icone" />
                 </div>
               </div>
             ) : (
-              <img
-                src={selectedImage.preview}
-                className="file-image"
-                alt="preview"
-              ></img>
+              <div className="container-image" {...getRootProps()}>
+                <img
+                  src={selectedImage.preview}
+                  className="file-image"
+                  alt="preview"
+                ></img>
+              </div>
             ))}
 
           <div
@@ -73,21 +93,36 @@ const AvatarUpload: React.FC = () => {
           >
             {isErroUpload ? (
               <>
-                <span className="file-title title-error">
+                <span className="file-title title-error" {...getRootProps()}>
                   Sorry, the upload failed.
                 </span>
-                <span className="file-subtitle subtitle-error">Try again</span>
+                <span className="file-subtitle subtitle-error" {...getRootProps()}>Try again</span>
               </>
             ) : (
               <>
-                <span className="file-title title-default">
-                  <FaMountain />
-                  <span>Organization Logo</span>
-                </span>
+                {selectedImage && !isSelectedImageSaved ? (
+                  <div className="container-image-to-save">
+                    <span>Crop</span>
+                    <input 
+                      type="range" 
+                      max={10} 
+                      value={imageValue}
+                      onChange={updateImageValue} 
+                      style={getBackgroundSize()} 
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <span className="file-title title-default" {...getRootProps()}>
+                      <FaMountain />
+                      <span>Organization Logo</span>
+                    </span>
 
-                <span className="file-subtitle">
-                  Drop the image here or click to browse.
-                </span>
+                    <span className="file-subtitle" {...getRootProps()}>
+                      Drop the image here or click to browse.
+                    </span>
+                  </>
+                )}
               </>
             )}
           </div>
