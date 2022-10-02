@@ -1,24 +1,26 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaMountain } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { RiErrorWarningFill } from "react-icons/ri";
-import { ImageModel } from "./avatarUpload-type";
+import { PropsModel, ImageModel } from "./avatarUpload-type";
 import "./avatarUploadStyles.scss";
-
-type PropsAvatarUpload = {
-  onChange?: (image: ImageModel) => void;
-};
 
 type AcceptedFilesModel = (args: ImageModel[]) => void;
 
-const AvatarUpload: React.FC<PropsAvatarUpload> = ({ onChange }) => {
+const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage }) => {
   const [selectedImage, setSelectedImage] = useState<ImageModel | null>();
   const [zoomImageValue, setZoomImageValue] = useState<number>(1);
   const [isSelectedImageSaved, setIsSelectedImageSaved] =
     useState<boolean>(false);
   const [isErroUpload, setIsErroUpload] = useState<boolean>(false);
   
+  useEffect(() => {
+    if(defaultImage) {
+      selectImage(defaultImage)
+    }
+  })
+
   const selectImage = (image: ImageModel): void => {
     const newImage = Object.assign(image, {
       preview: URL.createObjectURL(image),

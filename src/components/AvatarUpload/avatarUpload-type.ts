@@ -5,3 +5,8 @@ export type ImageModel = File & {
   type?: string;
   zoomValue?: number;
 };
+
+export interface PropsModel<T> {
+  onChange?: (args: T) => void
+  defaultImage?: T
+}
