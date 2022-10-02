@@ -3,23 +3,22 @@ import { useDropzone } from "react-dropzone";
 import { FaMountain } from "react-icons/fa";
 import "./avatarUploadStyles.scss";
 
-type ImageModel = {
-  path: string;
-  preview: string;
-  lastModified: string;
-  lastModifiedDate: string;
-  name: string;
-  size: string;
-  type: string;
-  webkitRelativePath: string;
+type ImageModel = File & {
+  path?: string;
+  preview?: string;
+  name?: string;
+  type?: string;
 };
+
+type AcceptedFilesModel = (args: ImageModel[]) => void
 
 const AvatarUpload: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<ImageModel>();
 
-  const onDrop = useCallback((acceptedFiles: any[]) => {
+  const onDrop = useCallback<AcceptedFilesModel>((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
-      const newImage: ImageModel = Object.assign(file, {
+      
+      const newImage = Object.assign(file, {
         preview: URL.createObjectURL(file),
       });
 
@@ -34,6 +33,7 @@ const AvatarUpload: React.FC = () => {
       <input type="file" {...getInputProps()} />
       <div className="drop-file-container">
         <div className='container-info-image'>
+          
           {selectedImage && (
             <img src={selectedImage.preview} className="file-image" alt="preview"></img>
           )}
