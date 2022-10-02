@@ -6,7 +6,7 @@ import { RiErrorWarningFill } from "react-icons/ri";
 import { PropsModel, ImageModel } from "./avatarUpload-type";
 import "./avatarUploadStyles.scss";
 
-type AcceptedFilesModel = (args: ImageModel[]) => void;
+type AcceptedFilesModel = (args: File[]) => void;
 
 const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage }) => {
   const [selectedImage, setSelectedImage] = useState<ImageModel | null>();
@@ -17,12 +17,13 @@ const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage
   
   useEffect(() => {
     if(defaultImage) {
-      selectImage(defaultImage)
+      checkIfFileIsValid(defaultImage)
+      setSelectedImage(defaultImage);
     }
-  })
+  }, [defaultImage])
 
-  const selectImage = (image: ImageModel): void => {
-    const newImage = Object.assign(image, {
+  const selectImage = (image: File): void => {
+    const newImage: ImageModel = Object.assign(image, {
       preview: URL.createObjectURL(image),
     });
 
@@ -33,17 +34,20 @@ const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage
     returnToInitialState();
 
     acceptedFiles.forEach((file) => {
-      if (!file.type.includes("image")) {
-        setIsErroUpload(true);
-      } else {
-        setIsErroUpload(false);
-      }
-
+      checkIfFileIsValid(file)
       selectImage(file);
     });
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const checkIfFileIsValid = (file: File | ImageModel | undefined) => {
+    if (file?.type && !file.type.includes("image")) {
+      setIsErroUpload(true);
+    } else {
+      setIsErroUpload(false);
+    }
+  }
 
   const returnToInitialState = (): void => {
     setSelectedImage(null);

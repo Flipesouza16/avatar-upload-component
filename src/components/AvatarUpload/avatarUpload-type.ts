@@ -1,9 +1,10 @@
-export type ImageModel = File & {
+export type ImageModel = {
   path?: string;
   preview?: string;
   name?: string;
   type?: string;
   zoomValue?: number;
+  size?: number
 };
 
 export interface PropsModel<T> {
