@@ -1,9 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaMountain } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { RiErrorWarningFill } from "react-icons/ri";
 import "./avatarUploadStyles.scss";
+
+type PropsAvatarUpload = {
+  onChange?: (image: ImageModel) => void;
+};
 
 type ImageModel = File & {
   path?: string;
@@ -15,16 +19,23 @@ type ImageModel = File & {
 
 type AcceptedFilesModel = (args: ImageModel[]) => void;
 
-const AvatarUpload: React.FC = () => {
+const AvatarUpload: React.FC<PropsAvatarUpload> = ({ onChange }) => {
   const [selectedImage, setSelectedImage] = useState<ImageModel | null>();
   const [zoomImageValue, setZoomImageValue] = useState<number>(1);
   const [isSelectedImageSaved, setIsSelectedImageSaved] =
     useState<boolean>(false);
   const [isErroUpload, setIsErroUpload] = useState<boolean>(false);
+  const selectImage = (image: ImageModel): void => {
+    const newImage = Object.assign(image, {
+      preview: URL.createObjectURL(image),
+    });
+
+    setSelectedImage(newImage);
+  };
 
   const onDrop = useCallback<AcceptedFilesModel>((acceptedFiles) => {
-    returnToInitialState()
-    
+    returnToInitialState();
+
     acceptedFiles.forEach((file) => {
       if (!file.type.includes("image")) {
         setIsErroUpload(true);
@@ -32,11 +43,7 @@ const AvatarUpload: React.FC = () => {
         setIsErroUpload(false);
       }
 
-      const newImage = Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      });
-
-      setSelectedImage(newImage);
+      selectImage(file);
     });
   }, []);
 
@@ -46,7 +53,7 @@ const AvatarUpload: React.FC = () => {
     setSelectedImage(null);
     setIsErroUpload(false);
     setIsSelectedImageSaved(false);
-    setZoomImageValue(1)
+    setZoomImageValue(1);
   };
 
   const isInitialState = (): boolean => {
@@ -55,7 +62,9 @@ const AvatarUpload: React.FC = () => {
     );
   };
 
-  const updateZoomImageValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const updateZoomImageValue = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const newValue = e.target.valueAsNumber;
     if (newValue >= 1) {
       setZoomImageValue(newValue);
@@ -68,6 +77,10 @@ const AvatarUpload: React.FC = () => {
       imageToSave.zoomValue = zoomImageValue;
       setIsSelectedImageSaved(true);
       setSelectedImage(imageToSave);
+
+      if (onChange) {
+        onChange(selectedImage);
+      }
     }
   };
 
@@ -82,9 +95,7 @@ const AvatarUpload: React.FC = () => {
         <div className="container-info-image">
           {selectedImage &&
             (isErroUpload ? (
-              <div
-                className="container-image container-image-error"
-              >
+              <div className="container-image container-image-error">
                 <div className="file-image-icone">
                   <RiErrorWarningFill className="icone" />
                 </div>
