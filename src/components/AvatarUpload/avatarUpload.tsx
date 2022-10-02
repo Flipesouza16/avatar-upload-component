@@ -16,7 +16,7 @@ type AcceptedFilesModel = (args: ImageModel[]) => void;
 
 const AvatarUpload: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<ImageModel | null>();
-  const [imageValue, setImageValue] = useState<number>(0);
+  const [imageValue, setImageValue] = useState<number>(1);
 
   const [isSelectedImageSaved, setIsSelectedImageSaved] =
     useState<boolean>(false);
@@ -81,6 +81,7 @@ const AvatarUpload: React.FC = () => {
                 <img
                   src={selectedImage.preview}
                   className="file-image"
+                  style={{ transform: `scale(${imageValue})` }}
                   alt="preview"
                 ></img>
               </div>
