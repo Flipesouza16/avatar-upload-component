@@ -3,6 +3,13 @@ $backgroundBox: #F2F5F8;
 $borderDashed: #C7CDD3;
 $colorTitle: #495567;
 $colorSubtitle: #677489;
+$colorError: #C64D32;
+$backgroundImage: #C3CBD5;
+$colorIconeWarning: #FFF;
+
+.box-default {
+  border: 2px dashed $borderDashed;
+}
 
 .box {
   position: relative;
@@ -15,12 +22,11 @@ $colorSubtitle: #677489;
   width: 553px;
   height: 177px;
   margin: auto;
-  border: 2px dashed $borderDashed;
 
   .box-header {
     position: absolute;
     right: 0;
-    margin: -10px 18px;
+    margin: 4px 28px;
     cursor: pointer;
   }
 
@@ -39,11 +45,18 @@ $colorSubtitle: #677489;
       display: flex;
       flex-direction: row;
       margin: auto;
+    }
+
+    .title-default {
       color: $colorTitle;
 
       span {
         margin-left: 10px;
       }
+    }
+
+    .title-error {
+      color: $colorError;
     }
 
     .file-subtitle {
@@ -52,6 +65,20 @@ $colorSubtitle: #677489;
       vertical-align: top;
       color: $colorSubtitle;
     }
+   
+    .file-subtitle {
+      font-weight: 400;
+      font-size: 17px;
+      vertical-align: top;
+      color: $colorSubtitle;
+    }
+   
+    .subtitle-error {
+      color: $colorSubtitle;
+      text-decoration: underline;
+      margin-left: -112px;
+      font-size: 18px;
+    }
     
     .container-info-image {
       display: flex;
@@ -59,13 +86,37 @@ $colorSubtitle: #677489;
       align-items: center;
       
       .file-image {
-        width: 170px;
-        height: 170px;
+        width: 150px;
+        height: 150px;
         border-radius: 128%;
         position: absolute;
         left: 0;
-        margin-left: 25px;
+        margin-left: 42px;
+        background-color: $backgroundImage;
       }
+
+      .container-image-error {
+        position: absolute;
+        left: 0;
+        margin-left: 42px;
+
+        .file-image-icone {
+          width: 150px;
+          height: 150px;
+          border-radius: 128%;
+          position: relative;
+          background-color: $backgroundImage;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+  
+          .icone {
+            color: $colorIconeWarning;
+            font-size: 40px;
+          }
+        }
+      }
+     
 
       .container-titles {
         display: flex;
@@ -74,11 +125,16 @@ $colorSubtitle: #677489;
       }
 
       .container-title-with-image-filled {
-        margin-left: 127px
+        margin-left: 155px
+      }
+    
+      .container-title-with-image-error {
+        margin-left: 42px
       }
     }
   }
 }
+
 
 .drop-file-container:hover {
   opacity: 0.6;
