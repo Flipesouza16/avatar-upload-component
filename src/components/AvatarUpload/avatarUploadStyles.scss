@@ -148,6 +148,26 @@ $colorIconeWarning: #FFF;
             height: 21px;
             height: 2px;
             margin-top: 5px;
+            cursor: pointer;
+          }
+
+          .button-save {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin: -67px 30px;
+            background: #3D485F;
+            color: #fff;
+            border-radius: 10px;
+            width: 109px;
+            height: 32px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+          }
+
+          .button-save:hover {
+            opacity: 0.6;
           }
         }
       }
@@ -162,9 +182,3 @@ $colorIconeWarning: #FFF;
     }
   }
 }
-
-
-.drop-file-container:hover {
-  opacity: 0.6;
-}
-
