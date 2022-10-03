@@ -85,13 +85,13 @@ const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage
   };
 
   return (
-    <div className={`box ${isInitialState() && "box-dashed"}`}>
+    <div data-testid="avatar-upload" className={`box ${isInitialState() && "box-dashed"}`}>
       {!isInitialState() && (
-        <div className="box-header">
-          <GrClose size={20} onClick={returnToInitialState} />
+        <div data-testid="close-button" className="box-header">
+          <GrClose data-testid="close-button-click" size={20} onClick={returnToInitialState} />
         </div>
       )}
-      <div className="drop-file-container">
+      <div data-testid="drop-file-container" className="drop-file-container">
         <div className="container-info-image">
           {selectedImage &&
             (isErroUpload ? (
@@ -103,6 +103,7 @@ const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage
             ) : (
               <div className="container-image">
                 <img
+                  data-testid="avatar-image"
                   src={selectedImage.preview}
                   className="file-image"
                   style={{ transform: `scale(${zoomImageValue})` }}
@@ -134,12 +135,13 @@ const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage
                   <div className="container-image-to-save">
                     <span>Crop</span>
                     <input
+                      data-testid="slider"
                       type="range"
                       max={10}
                       value={zoomImageValue}
                       onChange={updateZoomImageValue}
                     />
-                    <button className="button-save" onClick={saveImage}>
+                    <button data-testid="button-save" className="button-save" onClick={saveImage}>
                       Save
                     </button>
                   </div>
@@ -164,7 +166,7 @@ const AvatarUpload: React.FC<PropsModel<ImageModel>> = ({ onChange, defaultImage
         </div>
       </div>
 
-      <input type="file" {...getInputProps()} />
+      <input data-testid="input-value" type="file" {...getInputProps()} />
     </div>
   );
 };
